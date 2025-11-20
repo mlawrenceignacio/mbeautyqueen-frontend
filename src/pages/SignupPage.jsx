@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import axios from "../api/axiosInstance.js";
 import { handleGoogleLogin } from "../api/handleGoogleLogin.js";
 import Loading from "../components/Loading.jsx";
+import useUserStore from "../store/useUserStore.js";
 
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -14,6 +15,8 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const setUser = useUserStore((state) => state.setUser);
 
   const navigate = useNavigate();
 
@@ -33,6 +36,7 @@ const SignupPage = () => {
 
       setIsLoading(false);
       toast.success(res.data.message);
+      setUser(res.data.user);
       navigate("/home");
     } catch (error) {
       setIsLoading(false);

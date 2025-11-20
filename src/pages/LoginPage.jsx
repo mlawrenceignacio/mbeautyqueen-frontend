@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import axios from "../api/axiosInstance.js";
 import { handleGoogleLogin } from "../api/handleGoogleLogin.js";
 import Loading from "../components/Loading";
+import useUserStore from "../store/useUserStore.js";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -15,6 +16,8 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const setUser = useUserStore((state) => state.setUser);
+
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -22,7 +25,6 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      console.log("Submitting...");
       const res = await axios.post(
         "/auth/login",
         { email, password },
@@ -32,10 +34,12 @@ const LoginPage = () => {
           },
         }
       );
-      console.log("Response received:", res.data);
 
       setIsLoading(false);
       toast.success(res.data.message);
+      setUser(res.data.user);
+      setEmail("");
+      setPassword("");
       navigate("/home");
     } catch (error) {
       setIsLoading(false);
