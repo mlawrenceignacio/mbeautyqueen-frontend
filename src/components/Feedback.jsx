@@ -188,14 +188,14 @@ const Feedback = () => {
           ))}
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex w-full gap-2">
           <input
             ref={inputRef}
             type="text"
             placeholder="Comment here..."
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            className="rounded-l px-2 py-1 flex-1 outline-none bg-red-200 text-black shadow-md rounded-lg placeholder:text-gray-500 placeholder:text-sm md:py-2 md:text-lg md:placeholder:text-lg"
+            className="pl-2 flex-1 outline-none bg-red-200 text-black shadow-md rounded-lg text-md placeholder:text-gray-500 placeholder:text-sm md:py-2 md:text-lg md:placeholder:text-lg w-[75%] py-1"
           />
 
           {user?.email ? (
@@ -218,7 +218,7 @@ const Feedback = () => {
             </div>
           ) : (
             <div
-              className="bg-green-600 text-white px-2 py-1 rounded-lg text-lg flex items-center"
+              className="bg-green-600 text-white px-2 py-1 rounded-lg text-xs sm:text-sm md:text-lg flex items-center justify-center text-center w-[25%] md:w-[15%] cursor-pointer hover:bg-green-700 hover:shadow-[2px_2px_1px_black]"
               onClick={() => setShowModal(true)}
             >
               Sign In

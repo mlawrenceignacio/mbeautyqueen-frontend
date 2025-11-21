@@ -10,6 +10,8 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ServicesPage from "./pages/ServicesPage.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
+import Reservation from "./pages/Reservation.jsx";
 
 const App = () => {
   const { setUser, clearUser } = useUserStore();
@@ -49,6 +51,8 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/services" element={<ServicesPage />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/reservation" element={<Reservation />} />
       </Routes>
 
       <Toaster position="top-center" />

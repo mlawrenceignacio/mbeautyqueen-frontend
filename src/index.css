@@ -123,3 +123,30 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+/* RESERVATION */
+
+.input-reservation-cont {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  align-items: center;
+}
+
+.input-reservation-cont label {
+  font-weight: bold;
+  font-size: 14px;
+  width: 40%;
+  color: white;
+}
+
+.input-reservation {
+  font-size: 14px;
+  outline: none;
+  border-radius: 3px;
+  padding: 4px 7px;
+  width: 75%;
+  box-shadow: 1px 1px 1px black;
+  border: 1px solid black;
+}

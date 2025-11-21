@@ -79,7 +79,7 @@ const SignupPage = () => {
             <div className="auth-input md:w-[60%] md:text-lg lg:bg-white lg:text-xl lg:w-[85%] lg:p-[5px]">
               <IoIosLock color="darkred" />
               <input
-                type="text"
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter password"

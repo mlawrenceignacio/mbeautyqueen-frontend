@@ -81,7 +81,7 @@ const Header = () => {
         />
 
         <ul className="flex gap-1 items-center h-[40px] text-xs lg:text-[14px]">
-          <li className="navbarli lg:w-[110px]">
+          <li className="navbarli lg:w-[110px] md:w-[100px]">
             <a href="/home">HOME</a>
           </li>
           <li className="navbarli lg:w-[110px]">
@@ -90,7 +90,7 @@ const Header = () => {
           <li className="navbarli lg:w-[110px]">
             <a href="/reservation">RESERVATION</a>
           </li>
-          <li className="navbarli lg:w-[110px]">
+          <li className="navbarli lg:w-[110px] ">
             <a href="/about">ABOUT US</a>
           </li>
           <li className="navbarli lg:w-[110px]">

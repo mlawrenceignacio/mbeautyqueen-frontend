@@ -69,7 +69,7 @@ const LoginPage = () => {
             <div className="auth-input md:w-[70%] md:text-lg lg:w-[60%] lg:text-xl">
               <IoIosLock />
               <input
-                type="text"
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter password"
