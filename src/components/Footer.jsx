@@ -5,14 +5,10 @@ import xIcon from "../assets/images/twitter.png";
 const Footer = () => {
   return (
     <div className="flex flex-col items-center footerCont w-full pt-5">
-      <div className="flex flex-col gap-5 mb-5 ">
-        <div className="text-red-950 text-sm flex flex-col gap-1 items-center">
-          <div className="flex gap-1 ">
-            <p>Brgy. Mahabang Parang, Angono, Rizal</p>
-          </div>
-          <div className="flex gap-1">
-            <p>+63983748292</p>
-          </div>
+      <div className="flex flex-col gap-5 mb-5 lg:flex-row lg:w-full lg:justify-evenly">
+        <div className="text-red-950 text-sm flex flex-col gap-1 items-center lg:items-start">
+          <p>Brgy. Mahabang Parang, Angono, Rizal</p>
+          <p>+63983748292</p>
         </div>
 
         <div className="flex gap-1 justify-center mt-3">

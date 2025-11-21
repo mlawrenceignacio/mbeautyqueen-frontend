@@ -23,6 +23,11 @@ body {
   box-shadow: 2px 2px 0 rgb(64, 0, 0);
 }
 
+.line {
+  height: 1px;
+  background-color: #5b0404;
+}
+
 /* FOR LOGIN/SIGIN */
 .auth-input {
   width: 100%;
@@ -58,11 +63,7 @@ body {
 .navbarli:hover {
   background-color: #ffd5d5;
   color: #5b0404;
-}
-
-/* HOME HERO IMG */
-#hero {
-  background-image: url("./assets/images/mobileBG.jpg");
+  font-weight: bold;
 }
 
 /* Images */
@@ -115,4 +116,10 @@ body {
   background-color: #ffdfdf;
 }
 
-/* RESPONSIVENESS */
+/* SERVICES */
+#head {
+  background-image: url("assets/images/desktopBG.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

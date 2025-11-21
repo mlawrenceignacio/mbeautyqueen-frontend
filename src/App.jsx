@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { useEffect, useState } from "react";
 
 import useUserStore from "./store/useUserStore.js";
 import axios from "./api/axiosInstance.js";
@@ -8,7 +9,7 @@ import Loading from "./components/Loading.jsx";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
-import { useEffect, useState } from "react";
+import ServicesPage from "./pages/ServicesPage.jsx";
 
 const App = () => {
   const { setUser, clearUser } = useUserStore();
@@ -47,6 +48,7 @@ const App = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/services" element={<ServicesPage />} />
       </Routes>
 
       <Toaster position="top-center" />
