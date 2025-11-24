@@ -86,7 +86,7 @@ const Reservation = () => {
               className="h-[150px] w-[80%] md:w-[55%] md:h-[250px] lg:h-[250px] lg:w-[65%] object-cover"
             />
 
-            <p className="hidden lg:flex text-lg text-center bg-pink-300/50 p-3 rounded-lg w-[85%]">
+            <p className="hidden lg:flex text-lg text-center bg-pink-300/50 p-3 rounded-lg w-[85%] mt-3">
               After booking a reservation, please wait for an email or chat
               response from us. If the reservation remains pending for 24 hours
               without a reply from our team, it will be automatically canceled.
@@ -97,7 +97,7 @@ const Reservation = () => {
             onSubmit={handleSubmit}
             className=" p-4 flex flex-col w-full items-center"
           >
-            <h2 className="text-xl text-center font-bold my-2 md:mb-4 w-full lg:text-2xl lg:mb-0">
+            <h2 className="text-xl text-center font-bold my-2 md:mb-4 w-full lg:text-2xl lg:mb-0 lg:hidden">
               BOOK RESERVATION
             </h2>
             <p className="text-sm md:text-lg md:mb-2 text-center bg-pink-300/50 p-3 rounded-lg md:w-[70%] lg:w-[80%] lg:hidden">
@@ -106,8 +106,8 @@ const Reservation = () => {
               without a reply from our team, it will be automatically canceled.
             </p>
 
-            <div className="flex flex-col px-3 pb-5 pt-3 mt-2 w-full items-center lg:items-end gap-1.5 bg-red-950 rounded-lg shadow-[1px_1px_1px_black] md:w-[70%] lg:w-[80%]">
-              <p className="text-start text-pink-100 px-3 mb-2 w-full bg-red-900 py-1.5 rounded-lg shadow-[1px_1px_1px_black]">
+            <div className="flex flex-col px-3 pb-5 pt-3 mt-2 w-full items-center lg:items-end gap-1.5 bg-red-900 rounded-lg shadow-[1px_1px_1px_black] md:w-[70%] lg:w-[95%] lg:mt-0 lg:p-5">
+              <p className="text-start text-pink-100 px-3 mb-2 w-full bg-red-700 py-1.5 rounded-lg shadow-[1px_1px_1px_black]">
                 Personal Information
               </p>
               <div className="input-reservation-cont">
@@ -158,7 +158,7 @@ const Reservation = () => {
                 />
               </div>
 
-              <p className="text-start text-pink-100 px-3 mt-5 mb-2 w-full bg-red-900 py-1.5 rounded-lg shadow-[1px_1px_1px_black]">
+              <p className="text-start text-pink-100 px-3 mt-5 mb-2 w-full bg-red-700 py-1.5 rounded-lg shadow-[1px_1px_1px_black]">
                 Reservation Details
               </p>
 

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import useUserStore from "../store/useUserStore.js";
+import axios from "../api/axiosInstance.js";
+import EditUsername from "./EditUsername.jsx";
 
 import menuIcon from "../assets/images/menu.png";
 import logo from "../assets/images/logo.jpg";
@@ -9,9 +12,21 @@ import settingIcon from "../assets/images/settings.png";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showEditUsername, setShowEditUsername] = useState(false);
   const nav = useNavigate();
 
-  const user = useUserStore((state) => state.user);
+  const { user, clearUser } = useUserStore();
+
+  const handleLogout = async () => {
+    try {
+      await axios.post("/auth/logout");
+      clearUser();
+      toast.success("Logged out succesfully!");
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   return (
     <div>
@@ -48,7 +63,7 @@ const Header = () => {
         )}
 
         <ul
-          className={`fixed top-16 right-4 z-50 bg-pink-200/50 backdrop-blur-md py-3 px-5 rounded-lg border border-black w-[200px] flex flex-col items-center text-center gap-2 transition-all duratiom-300 ${
+          className={`fixed top-[72px] right-4 z-50 bg-pink-700/50 text-pink-100 font-sans backdrop-blur-md py-3 px-5 rounded-lg border border-black w-[200px] flex flex-col items-center text-center gap-2 transition-all duratiom-300 ${
             showMenu
               ? "opacity-100 translate-y-0"
               : "opacity-0 -translate-y-5 pointer-events-none"
@@ -69,9 +84,55 @@ const Header = () => {
           <li className="dropdownli">
             <a href="/contact">CONTACT US</a>
           </li>
-          {user && <li className="dropdownli">SETTINGS</li>}
+          {user && (
+            <li
+              className="dropdownli"
+              onClick={() => {
+                setShowSettings(true);
+                setShowMenu(false);
+              }}
+            >
+              SETTINGS
+            </li>
+          )}
         </ul>
       </div>
+
+      {showSettings && <div className="md:hidden inset-0 fixed"></div>}
+
+      {showSettings && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setShowSettings(false)}
+        ></div>
+      )}
+
+      {showSettings && (
+        <ul className="absolute z-50 text-white bg-red-800/90 lg:bg-red-800/80 right-5 top-[70px] lg:top-[67px] p-3 rounded-lg text-center">
+          <li
+            className="px-2 py-1 hover:bg-red-950 rounded-lg cursor-pointer"
+            onClick={() => {
+              setShowEditUsername(true);
+              setShowSettings(false);
+            }}
+          >
+            Edit Username
+          </li>
+          <li
+            className="px-2 py-1 hover:bg-red-950 rounded-lg cursor-pointer"
+            onClick={() => {
+              setShowSettings(false);
+              handleLogout();
+            }}
+          >
+            Logout
+          </li>
+        </ul>
+      )}
+
+      {showEditUsername && (
+        <EditUsername setShowEditUsername={setShowEditUsername} />
+      )}
 
       <div className="hidden md:flex items-center justify-between px-5 py-1.5 bg-red-950 text-pink-100 text-lg w-full overflow-hidden lg:gap-20 gap-16">
         <img
@@ -99,7 +160,10 @@ const Header = () => {
         </ul>
 
         {user ? (
-          <div className="w-[50px] h-[50px] cursor-pointer">
+          <div
+            className="w-[50px] h-[50px] cursor-pointer"
+            onClick={() => setShowSettings(!showSettings)}
+          >
             <img src={settingIcon} alt="Setting Icon" />
           </div>
         ) : (

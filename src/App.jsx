@@ -12,35 +12,30 @@ import HomePage from "./pages/HomePage";
 import ServicesPage from "./pages/ServicesPage.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import Reservation from "./pages/Reservation.jsx";
+import ContactUs from "./pages/ContactUs.jsx";
 
 const App = () => {
-  const { setUser, clearUser } = useUserStore();
+  const { setUser, user } = useUserStore();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const verifyUser = async () => {
-      try {
-        const res = await axios.get("/user", { withCredentials: true });
-
-        if (res.data.user) {
-          setUser(res.data.user);
-        } else {
-          clearUser();
+      if (!user) {
+        try {
+          const res = await axios.get("/user", { withCredentials: true });
+          if (res.data.user) setUser(res.data.user);
+        } catch (err) {
+          console.warn("Could not verify user:", err.message);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (err) {
-        setIsLoading(false);
-        clearUser();
-        console.warn(
-          "Could not verify user (token might be missing/expired):",
-          err.message
-        );
-      } finally {
+      } else {
         setIsLoading(false);
       }
     };
 
     verifyUser();
-  }, [setUser, clearUser]);
+  }, [setUser, user]);
 
   return isLoading ? (
     <Loading />
@@ -53,6 +48,7 @@ const App = () => {
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/reservation" element={<Reservation />} />
+        <Route path="/contact" element={<ContactUs />} />
       </Routes>
 
       <Toaster position="top-center" />

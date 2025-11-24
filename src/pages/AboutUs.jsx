@@ -8,6 +8,10 @@ import owner3 from "../assets/images/owner3.png";
 import gallery1 from "../assets/images/interior.png";
 import gallery2 from "../assets/images/interior2.png";
 import gallery3 from "../assets/images/logo2.png";
+import bg from "../assets/images/desktopBG3.jpg";
+import missionIcon from "../assets/images/mission.png";
+import visionIcon from "../assets/images/vision.png";
+import aboutIcon from "../assets/images/about.png";
 
 const AboutUs = () => {
   return (
@@ -21,7 +25,7 @@ const AboutUs = () => {
           </h1>
 
           <p className="text-center text-red-950 text-sm md:text-lg">
-            A story the eye witnessed.
+            A story the our eyes witnessed.
           </p>
 
           <div className="flex items-center justify-center gap-3 md:gap-4 h-[130px] md:h-[200px]  px-2 py-1.5 mt-2 md:mt-4">
@@ -43,16 +47,90 @@ const AboutUs = () => {
           </div>
         </div>
 
+        <section className="flex flex-col items-center text-center py-5 gap-3 bg-pink-100/50 md:px-20  lg:px-1 ">
+          <div className="lg:flex lg:flex-row lg:items-center lg:w-[80%] lg:gap-3">
+            <div className="flex flex-col gap-2 lg:w-[50%] lg:flex-1">
+              <div className="flex w-full items-center lg:justify-start lg:pl-4 justify-center gap-2">
+                <img
+                  src={missionIcon}
+                  alt="Mission Icon"
+                  className="w-[25px] h-[25px]"
+                />
+                <h2 className="text-xl font-bold text-red-950 md:text-2xl">
+                  Our Mission
+                </h2>
+              </div>
+              <p className="text-justify text-sm px-5  md:text-lg">
+                MbeautyQueen Beauty and Wellness is committed to delivering
+                high-quality, client-centered beauty and wellness services that
+                enhance confidence, comfort, and natural beauty. We provide
+                expertly crafted treatments, from brows and lashes to full
+                aesthetic and spa services, using proper training, advanced
+                techniques, and professional-grade equipment. Guided by genuine
+                care and dedication, we aim to create a warm, welcoming
+                environment where every client feels valued, pampered, and
+                empowered.
+              </p>
+            </div>
+
+            <img
+              src={bg}
+              alt="Background Image"
+              className="h-[310px] w-[50%] object-cover my-4 hidden lg:block rounded-lg shadow-[2px_1px_4px_black]"
+            />
+          </div>
+
+          <img
+            src={bg}
+            alt="Background Image"
+            className="w-[90%] md:w-[95%] h-[250px] md:h-[400px] lg:w-[55%] object-cover my-4 lg:hidden"
+          />
+
+          <div className="flex flex-col gap-2 lg:w-[80%]">
+            <div className="flex w-full items-center justify-center gap-2 lg:justify-start lg:pl-4">
+              <img
+                src={visionIcon}
+                alt="Vision Icon"
+                className="w-[25px] h-[25px]"
+              />
+              <h2 className="text-xl  md:text-2xl font-bold text-red-950">
+                Our Vision
+              </h2>
+            </div>
+            <p className="text-justify text-sm px-4 md:text-lg">
+              Our vision is to become a leading beauty and wellness destination
+              recognized for excellence, innovation, and heartfelt service. We
+              aspire to expand our reach across more communities, offering a
+              complete and continually evolving range of treatments that meet
+              the highest standards of safety and quality. By nurturing a
+              culture of learning, professionalism, and passion, MbeautyQueen
+              Beauty and Wellness aims to inspire trust, set industry
+              benchmarks, and uplift lives through transformative beauty
+              experiences.
+            </p>
+          </div>
+        </section>
+
         <section
           id="about-salon"
-          className="flex flex-col items-center lg:mt-6 mt-4 lg:w-[90%]"
+          className="flex flex-col items-center lg:mt-6 mt-4 lg:w-[90%] "
         >
-          <div className="flex flex-col lg:flex-row w-full items-center lg:justify-center lg:gap-10">
-            <div className="w-[90%] h-[200px] md:h-[220px] lg:h-[220px] lg:w-[25%] mt-2 mb-4 rounded-lg border border-black">
+          <div className="flex w-full justify-center items-center gap-2 mb-2 mt-3">
+            <img
+              src={aboutIcon}
+              alt="Vision Icon"
+              className="w-[25px] h-[25px]"
+            />
+            <h2 className="text-lg font-bold text-red-950  md:text-2xl">
+              ABOUT US
+            </h2>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full items-center lg:justify-center lg:gap-10 ">
+            <div className="w-[90%] h-[200px] md:w-[80%] md:h-[220px] lg:h-[220px] lg:w-[30%] mt-2 mb-4 rounded-lg border border-black">
               <img
                 src={salonLogo}
                 alt="Salon Logo"
-                className="w-full h-full object-contain rounded-lg "
+                className="w-full h-full object-contain rounded-lg border-y border-black"
               />
             </div>
 

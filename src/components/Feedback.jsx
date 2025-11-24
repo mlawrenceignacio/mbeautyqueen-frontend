@@ -100,7 +100,7 @@ const Feedback = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center text-red-100 bg-red-950 p-5 gap-3 overflow-hidden ">
+    <div className="flex flex-col items-center text-red-100 bg-pink-950 p-5 gap-3 overflow-hidden ">
       {isLoading && <Loading />}
 
       {showModal && (

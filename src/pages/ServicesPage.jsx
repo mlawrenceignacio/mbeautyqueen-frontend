@@ -20,10 +20,7 @@ const ServicesPage = () => {
             DISCOVER YOUR BEST LOOK WITH US
           </h1>
 
-          <p className="line mb-1 w-[70%] md:w-[50%]"></p>
-          <p className="line mb-[20px] w-[70%] md:w-[50%]"></p>
-
-          <p className="text-sm mb-5 bg-pink-200/60 p-2 rounded-lg w-[90%] md:w-[65%] lg:w-[50%] lg:text-lg shadow-[1px_1px_1px_black]">
+          <p className="text-sm mb-5  p-2 rounded-lg w-[90%] md:w-[65%] lg:w-[50%] lg:text-lg shadow-[1px_1px_1px_black]">
             Step into a space where skill meets elegance. Our stylists know
             their craft and treat every client like they matter. We listen, we
             create, we deliver.
@@ -53,7 +50,7 @@ const ServicesPage = () => {
 
             <button
               className="text-sm lg:text-lg bg-white text-red-950 px-4 py-1.5 rounded-full hover:bg-red-700 hover:shadow-[1px_1px_1px_black] hover:text-white border border-red-950"
-              onClick={() => nav("/contactus")}
+              onClick={() => nav("/contact")}
             >
               Contact Us
             </button>

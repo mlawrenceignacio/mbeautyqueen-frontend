@@ -44,7 +44,7 @@ const Services = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [services, setServices] = useState([]);
 
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Hair");
   const [showList, setShowList] = useState(false);
 
   const getServices = async () => {
@@ -88,8 +88,6 @@ const Services = () => {
           </li>
         ))}
       </ul>
-
-      {!category && <p className="p-4 text-center">Select a category above.</p>}
 
       {category && (
         <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-evenly lg:items-start lg:gap-5 w-full mt-6 bg-white py-5 px-3 rounded-md md:w-[80%] lg:w-[55%] lg:px-4">

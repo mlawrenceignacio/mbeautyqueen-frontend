@@ -13,7 +13,11 @@ import HeroImg3 from "../assets/images/heroimg.jpg";
 import HeroImg4 from "../assets/images/heroimg2.jpg";
 import HeroImg5 from "../assets/images/heroimg3.jpg";
 
+import { useNavigate } from "react-router-dom";
+
 const HomePage = () => {
+  const nav = useNavigate();
+
   return (
     <div className="w-[100vw] h-[100dvh] flex flex-col ">
       <div className="border-b-2 border-black">
@@ -64,7 +68,10 @@ const HomePage = () => {
                 “Your beauty, defined and refined — only at MBeautyQueen”{" "}
               </h1>
 
-              <div className="bg-red-950 text-pink-100 text-lg py-1.5 px-6 lg:py-2 lg:text-xl rounded-3xl transition-all duration-300 hover:bg-red-700 cursor-pointer hover:shadow-[2px_2px_1px_black]">
+              <div
+                className="bg-red-950 text-pink-100 text-lg py-1.5 px-6 lg:py-2 lg:text-xl rounded-3xl transition-all duration-300 hover:bg-red-700 cursor-pointer hover:shadow-[2px_2px_1px_black]"
+                onClick={() => nav("/contact")}
+              >
                 MESSAGE US
               </div>
             </div>
