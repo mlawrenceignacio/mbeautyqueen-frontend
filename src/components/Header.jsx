@@ -68,7 +68,7 @@ const Header = () => {
           }`}
         >
           <li className="dropdownli">
-            <a href="/home">HOME</a>
+            <a href="/">HOME</a>
           </li>
           <li className="dropdownli">
             <a href="/services">SERVICES</a>
@@ -142,10 +142,10 @@ const Header = () => {
         <ul className="flex gap-5 items-center h-[40px] text-xs lg:text-[14px]">
           <li
             className={`navbarli lg:w-[110px] md:w-[100px] ${
-              isActive("/home") ? "bg-red-800 shadow-lg" : ""
+              isActive("/") ? "bg-red-800 shadow-lg" : ""
             }`}
           >
-            <a href="/home">HOME</a>
+            <a href="/">HOME</a>
           </li>
 
           <li

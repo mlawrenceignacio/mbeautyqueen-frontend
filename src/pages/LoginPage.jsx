@@ -47,7 +47,7 @@ const LoginPage = () => {
 
     toast.success("Logged in successfully!");
     setIsLoading(false);
-    navigate("/home");
+    navigate("/");
 
     setEmail("");
     setPassword("");

@@ -86,7 +86,7 @@ const SignupPage = () => {
 
     toast.success("Account created!");
     setIsLoading(false);
-    navigate("/home");
+    navigate("/");
   }
 
   return (

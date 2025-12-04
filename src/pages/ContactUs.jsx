@@ -5,12 +5,10 @@ import ChatBox from "../components/ChatBox";
 function ContactUs() {
   return (
     <div className="flex flex-col min-h-screen bg-pink-50 w-full">
-      {/* HEADER MUST BE OUTSIDE SCROLL AND STICKY */}
       <div className="sticky top-0 z-50">
         <Header />
       </div>
 
-      {/* MAIN CONTENT — NO overflow-y-auto */}
       <main className="flex-1 w-full">
         <div className="flex flex-col items-center p-6 gap-6">
           <div className="w-full max-w-6xl">
@@ -31,7 +29,6 @@ function ContactUs() {
         </div>
       </main>
 
-      {/* FOOTER FIXED AT BOTTOM OF PAGE */}
       <Footer />
     </div>
   );
