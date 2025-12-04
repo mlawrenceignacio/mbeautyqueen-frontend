@@ -2,7 +2,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 import formatDate from "../utils/formatDate.js";
-import axios from "../api/axiosInstance.js";
+import { deleteFeedback } from "../utils/feedbackStorage.js";
+
 import useUserStore from "../store/useUserStore.js";
 
 import menuIcon from "../assets/images/dots.png";
@@ -12,21 +13,12 @@ const FeedbackCard = ({ fb, getFeedbacks, onEdit }) => {
   const [isLoading, setIsLoading] = useState(false);
   const user = useUserStore((state) => state.user);
 
-  const handleDelete = async () => {
-    setShowMenu(false);
+  const handleDelete = () => {
     setIsLoading(true);
-
-    try {
-      const res = await axios.delete(`/feedbacks/${fb._id}`);
-      await getFeedbacks();
-
-      setIsLoading(false);
-      console.log(res?.data?.message);
-    } catch (error) {
-      setIsLoading(false);
-      console.error(error.message);
-      toast.error("Failed to delete feedback.");
-    }
+    deleteFeedback(fb.id);
+    getFeedbacks();
+    setIsLoading(false);
+    toast.success("Feedback Deleted!");
   };
 
   return (

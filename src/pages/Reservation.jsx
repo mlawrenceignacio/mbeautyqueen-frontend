@@ -5,7 +5,7 @@ import Loading from "../components/Loading.jsx";
 import reservationImg from "../assets/images/reservationImage.png";
 
 import useUserStore from "../store/useUserStore.js";
-import axios from "../api/axiosInstance.js";
+import { getReservations, saveReservations } from "../utils/mockDB";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -25,44 +25,65 @@ const Reservation = () => {
   const [service, setService] = useState("");
   const [note, setNote] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    // VALIDATIONS
     if (!name || !number || !email || !address || !date || !time || !service) {
-      setIsLoading(false);
       toast.error("All fields are required.");
+      setIsLoading(false);
       return;
     }
 
-    try {
-      const res = await axios.post("/reservations", {
-        clientName: name,
-        phone: number,
-        email,
-        address,
-        date,
-        time,
-        service,
-        note,
-      });
-
-      toast.success(
-        "Reservation booked successfully!\nPlease wait for our response."
-      );
-      setName("");
-      setNumber("");
-      setEmail("");
-      setAddress("");
-      setDate("");
-      setTime("");
-      setService("");
-      setNote("");
-      console.log(res.data);
-    } catch (error) {
-      console.error(error.message);
-    } finally {
+    if (!/^\d{11}$/.test(number)) {
+      toast.error("Phone number must be 11 digits.");
       setIsLoading(false);
+      return;
     }
+
+    if (!email.includes("@") || !email.includes(".")) {
+      toast.error("Invalid email format.");
+      setIsLoading(false);
+      return;
+    }
+
+    if (new Date(date) < new Date()) {
+      toast.error("Date must be in the future.");
+      setIsLoading(false);
+      return;
+    }
+
+    const newReservation = {
+      id: Date.now(),
+      clientName: name,
+      phone: number,
+      email,
+      address,
+      date,
+      time,
+      service,
+      note,
+      status: "pending",
+      createdAt: Date.now(),
+    };
+
+    const reservations = getReservations();
+    saveReservations([...reservations, newReservation]);
+
+    toast.success("Reservation booked successfully!");
+
+    // RESET FORM
+    setName("");
+    setNumber("");
+    setEmail("");
+    setAddress("");
+    setDate("");
+    setTime("");
+    setService("");
+    setNote("");
+
+    setIsLoading(false);
   };
 
   return (
@@ -93,147 +114,162 @@ const Reservation = () => {
             </p>
           </div>
 
+          {/* FORM SECTION */}
           <form
             onSubmit={handleSubmit}
-            className=" p-4 flex flex-col w-full items-center"
+            className="w-full lg:w-[55%] bg-[#ffffff] shadow-lg rounded-2xl p-8 border border-red-200"
           >
-            <h2 className="text-xl text-center font-bold my-2 md:mb-4 w-full lg:text-2xl lg:mb-0 lg:hidden">
-              BOOK RESERVATION
+            <h2 className="text-2xl font-bold text-red-800 text-center mb-6 tracking-wide">
+              Reservation Form
             </h2>
-            <p className="text-sm md:text-lg md:mb-2 text-center bg-pink-300/50 p-3 rounded-lg md:w-[70%] lg:w-[80%] lg:hidden">
-              After booking a reservation, please wait for an email or chat
-              response from us. If the reservation remains pending for 24 hours
-              without a reply from our team, it will be automatically canceled.
-            </p>
 
-            <div className="flex flex-col px-3 pb-5 pt-3 mt-2 w-full items-center lg:items-end gap-1.5 bg-red-900 rounded-lg shadow-[1px_1px_1px_black] md:w-[70%] lg:w-[95%] lg:mt-0 lg:p-5">
-              <p className="text-start text-pink-100 px-3 mb-2 w-full bg-red-700 py-1.5 rounded-lg shadow-[1px_1px_1px_black]">
-                Personal Information
-              </p>
-              <div className="input-reservation-cont">
-                <label htmlFor="fullName">Full Name: </label>
-                <input
-                  type="text"
-                  id="fullName"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Ex: Maricar Dumon"
-                  className="input-reservation"
-                />
-              </div>
+            {/* FORM GRID */}
+            <div className="space-y-8">
+              {/* PERSONAL INFO */}
+              <div>
+                <p className="text-red-800 font-semibold mb-2">
+                  Personal Information
+                </p>
+                <div className="h-[2px] bg-red-300 w-full rounded-full mb-4"></div>
 
-              <div className="input-reservation-cont">
-                <label htmlFor="contactNo">Contact No: </label>
-                <input
-                  type="text"
-                  placeholder="Ex: 09372639263"
-                  id="contactNo"
-                  className="input-reservation"
-                  value={number}
-                  onChange={(e) => setNumber(e.target.value)}
-                />
-              </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="flex flex-col">
+                    <label className="font-medium text-red-900 mb-1">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-[#ffecec] border border-red-200 text-red-900 placeholder-red-700 focus:outline-none focus:ring-2 focus:ring-red-300"
+                      placeholder="Ex: Maricar Dumon"
+                    />
+                  </div>
 
-              <div className="input-reservation-cont">
-                <label htmlFor="email">Email: </label>
-                <input
-                  type="email"
-                  placeholder="Ex: mbeautyqueen@gmail.com"
-                  id="email"
-                  className="input-reservation"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
+                  <div className="flex flex-col">
+                    <label className="font-medium text-red-900 mb-1">
+                      Contact No
+                    </label>
+                    <input
+                      type="text"
+                      value={number}
+                      onChange={(e) => setNumber(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-[#ffecec] border border-red-200 text-red-900 placeholder-red-700 focus:outline-none focus:ring-2 focus:ring-red-300"
+                      placeholder="Ex: 09372639263"
+                    />
+                  </div>
 
-              <div className="input-reservation-cont">
-                <label htmlFor="address">Address: </label>
-                <input
-                  type="text"
-                  placeholder="Ex: Brgy. Mahabang Parang, Angono, Rizal"
-                  id="address"
-                  className="input-reservation"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-              </div>
+                  <div className="flex flex-col">
+                    <label className="font-medium text-red-900 mb-1">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-[#ffecec] border border-red-200 text-red-900 placeholder-red-700 focus:outline-none focus:ring-2 focus:ring-red-300"
+                      placeholder="Ex: mbeautyqueen@gmail.com"
+                    />
+                  </div>
 
-              <p className="text-start text-pink-100 px-3 mt-5 mb-2 w-full bg-red-700 py-1.5 rounded-lg shadow-[1px_1px_1px_black]">
-                Reservation Details
-              </p>
-
-              <div className="input-reservation-cont">
-                <label htmlFor="date">Date: </label>
-                <input
-                  type="date"
-                  id="date"
-                  className="input-reservation"
-                  value={date}
-                  min={new Date().toISOString().split("T")[0]}
-                  onChange={(e) => setDate(e.target.value)}
-                />
-              </div>
-
-              <div className="input-reservation-cont">
-                <label htmlFor="time">Time: </label>
-                <select
-                  name="time"
-                  id="time"
-                  className="input-reservation "
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Select Time
-                  </option>
-                  <option value="8:00 AM">8:00 AM</option>
-                  <option value="10:00 AM">10:00 AM</option>
-                  <option value="1:00 PM">1:00 PM</option>
-                  <option value="3:00 PM">3:00 PM</option>
-                  <option value="5:00 PM">5:00 PM</option>
-                </select>
-              </div>
-
-              <div className="input-reservation-cont">
-                <label htmlFor="serviceAvailed">Service/s: </label>
-                <input
-                  type="text"
-                  placeholder="Ex: Manicure, Pedicure..."
-                  id="serviceAvailed"
-                  className="input-reservation"
-                  value={service}
-                  onChange={(e) => setService(e.target.value)}
-                />
-              </div>
-
-              <div className="input-reservation-cont">
-                <label htmlFor="extraNote">Extra Note: </label>
-                <input
-                  type="text"
-                  id="extraNote"
-                  placeholder="Ex: Blue color for hair..."
-                  className="input-reservation"
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                />
-              </div>
-
-              {user?.email ? (
-                <button
-                  className="bg-pink-600 text-white py-2 w-[150px] rounded-lg mt-3 hover:bg-pink-800 hover:shadow-[1px_1px_1px_black]"
-                  type="submit"
-                >
-                  BOOK
-                </button>
-              ) : (
-                <div
-                  className="bg-green-600 text-white py-2 w-[150px] rounded-lg mt-3 hover:bg-green-800 hover:shadow-[1px_1px_1px_black] cursor-pointer text-center"
-                  onClick={() => nav("/signup")}
-                >
-                  Sign In
+                  <div className="flex flex-col">
+                    <label className="font-medium text-red-900 mb-1">
+                      Address
+                    </label>
+                    <input
+                      type="text"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-[#ffecec] border border-red-200 text-red-900 placeholder-red-700 focus:outline-none focus:ring-2 focus:ring-red-300"
+                      placeholder="Ex: Brgy. Mahabang Parang, Angono"
+                    />
+                  </div>
                 </div>
-              )}
+              </div>
+
+              {/* RESERVATION DETAILS */}
+              <div>
+                <p className="text-red-800 font-semibold mb-2">
+                  Reservation Details
+                </p>
+                <div className="h-[2px] bg-red-300 w-full rounded-full mb-4"></div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="flex flex-col">
+                    <label className="font-medium text-red-900 mb-1">
+                      Date
+                    </label>
+                    <input
+                      type="date"
+                      value={date}
+                      min={new Date().toISOString().split("T")[0]}
+                      onChange={(e) => setDate(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-[#ffecec] border border-red-200 text-red-900 placeholder-red-300 focus:outline-none focus:ring-2 focus:ring-red-300"
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label className="font-medium text-red-900 mb-1">
+                      Time
+                    </label>
+                    <select
+                      value={time}
+                      onChange={(e) => setTime(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-[#ffecec] border border-red-200 text-red-900 placeholder-red-300 focus:outline-none focus:ring-2 focus:ring-red-300"
+                    >
+                      <option value="" disabled>
+                        Select Time
+                      </option>
+                      <option value="8:00 AM">8:00 AM</option>
+                      <option value="10:00 AM">10:00 AM</option>
+                      <option value="1:00 PM">1:00 PM</option>
+                      <option value="3:00 PM">3:00 PM</option>
+                      <option value="5:00 PM">5:00 PM</option>
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label className="font-medium text-red-900 mb-1">
+                      Service/s
+                    </label>
+                    <input
+                      type="text"
+                      value={service}
+                      onChange={(e) => setService(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-[#ffecec] border border-red-200 text-red-900 placeholder-red-700 focus:outline-none focus:ring-2 focus:ring-red-300"
+                      placeholder="Ex: Haircut, Pedicure..."
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label className="font-medium text-red-900 mb-1">
+                      Extra Note
+                    </label>
+                    <input
+                      type="text"
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-[#ffecec] border border-red-200 text-red-900 placeholder-red-700 focus:outline-none focus:ring-2 focus:ring-red-300"
+                      placeholder="Optional"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* BUTTON */}
+            {user?.email ? (
+              <button className="w-full mt-8 py-3 bg-red-700 hover:bg-red-800 text-white font-bold rounded-xl shadow-md transition-all">
+                BOOK RESERVATION
+              </button>
+            ) : (
+              <div
+                onClick={() => nav("/signup")}
+                className="w-full mt-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-md cursor-pointer text-center"
+              >
+                Sign In First
+              </div>
+            )}
           </form>
         </section>
 

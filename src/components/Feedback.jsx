@@ -3,9 +3,14 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import useUserStore from "../store/useUserStore.js";
-import axios from "../api/axiosInstance.js";
+import {
+  getAllFeedbacks,
+  addFeedback,
+  updateFeedback,
+} from "../utils/feedbackStorage.js";
+
 import FeedbackCard from "./FeedbackCard.jsx";
-import Loading from "../components/Loading";
+import Loading from "./Loading";
 import Modal from "./Modal.jsx";
 
 import star from "../assets/images/star.png";
@@ -21,11 +26,56 @@ const Feedback = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [sortOption, setSortOption] = useState("");
   const [editingFeedbackId, setEditingFeedbackId] = useState(null);
-  const user = useUserStore((state) => state.user);
 
   const inputRef = useRef(null);
-
   const nav = useNavigate();
+  const user = useUserStore((state) => state.user);
+
+  const loadFeedbacks = () => {
+    setFeedbacks(getAllFeedbacks());
+  };
+
+  useEffect(() => {
+    loadFeedbacks();
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (!user?.email) return setShowModal(true);
+    if (!rating) return toast.error("Please select a star rating.");
+    if (!comment.trim()) return toast.error("Comment cannot be empty.");
+
+    const finalRating = rating || 1;
+
+    if (editingFeedbackId) {
+      updateFeedback(editingFeedbackId, {
+        star: finalRating,
+        message: comment,
+      });
+      setIsLoading(false);
+      toast.success("Feedback updated!");
+    } else {
+      addFeedback({
+        id: crypto.randomUUID(),
+        username: user.username,
+        email: user.email,
+        star: finalRating,
+        message: comment.trim(),
+        createdAt: new Date().toISOString(),
+      });
+      setIsLoading(false);
+      toast.success("Feedback posted!");
+    }
+
+    loadFeedbacks();
+    setComment("");
+    setRating(0);
+    setHover(0);
+    setEditingFeedbackId(null);
+    setIsLoading(false);
+  };
 
   const averageRating =
     feedbacks.length > 0
@@ -33,71 +83,11 @@ const Feedback = () => {
           feedbacks.reduce((acc, fb) => acc + fb.star, 0) / feedbacks.length
         ).toFixed(1)
       : 1;
-  const filteredFeedbacks = feedbacks.filter((fb) => {
-    if (sortOption === "") return true;
-    return fb.star === Number(sortOption);
-  });
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const finalRating = rating === 0 ? 1 : rating;
-
-      console.log({ star: finalRating, message: comment, email: user.email });
-
-      if (!rating || !finalRating) {
-        setIsLoading(false);
-        toast.error("Star rating is required.");
-        return;
-      }
-
-      if (editingFeedbackId) {
-        const res = await axios.put(`/feedbacks/${editingFeedbackId}`, {
-          star: finalRating,
-          message: comment,
-          email: user.email,
-        });
-        toast.success(res.data.message);
-      } else {
-        const res = await axios.post("/feedbacks", {
-          star: finalRating,
-          message: comment,
-          email: user.email,
-        });
-        toast.success(res.data.message);
-      }
-
-      await getFeedbacks();
-      setComment("");
-      setRating(0);
-      setHover(0);
-      setEditingFeedbackId(null);
-    } catch (error) {
-      console.error(error.message);
-      toast.error("Failed to post comment.");
-    }
-
-    setIsLoading(false);
-  }
-
-  const getFeedbacks = async () => {
-    setIsLoading(true);
-
-    try {
-      const res = await axios.get("/feedbacks");
-      setFeedbacks(res.data.feedbacks);
-    } catch (error) {
-      setFeedbacks(null);
-      console.error(error.message);
-    }
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    getFeedbacks();
-  }, []);
+  const filteredFeedbacks =
+    sortOption === ""
+      ? feedbacks
+      : feedbacks.filter((fb) => fb.star === Number(sortOption));
 
   return (
     <div className="flex flex-col items-center text-red-100 bg-pink-950 p-5 gap-3 overflow-hidden ">
@@ -115,10 +105,8 @@ const Feedback = () => {
 
       <h2 className="text-xl mt-2">CLIENT FEEDBACKS</h2>
 
-      <div
-        className="flex-1 flex flex-col w-[95%] md:w-[85%] lg:w-[60%] bg-white px-2 rounded-lg gap-1 
-            max-h-[300px] overflow-y-auto"
-      >
+      {/* FEEDBACK LIST */}
+      <div className="flex-1 flex flex-col w-[95%] md:w-[85%] lg:w-[60%] bg-white px-2 rounded-lg gap-1 max-h-[300px] overflow-y-auto pb-10">
         <div className="flex w-full justify-between px-3 sticky top-0 bg-white py-2 z-30">
           <div className="flex gap-2 items-center bg-red-950 rounded-2xl py-0.5 px-2">
             <img src={star} alt="Star Icon" className="star" />
@@ -126,43 +114,37 @@ const Feedback = () => {
           </div>
 
           <div className="flex gap-1 items-center bg-red-900 rounded-2xl py-0.5 px-1.5">
-            <label htmlFor="starSort">
-              <img src={star} alt="Star Icon" className="star" />
-            </label>
-
+            <img src={star} alt="Star Icon" className="star" />
             <select
-              name="starSort"
-              id="starSort"
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
               className="text-white py-0.5 px-0.5 bg-red-900 rounded-xl outline-none"
             >
               <option value="">Most Recent</option>
-              <option value="5">5</option>
-              <option value="4">4</option>
-              <option value="3">3</option>
-              <option value="2">2</option>
-              <option value="1">1</option>
+              {[5, 4, 3, 2, 1].map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
             </select>
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col md:items-center text-red-950 p-2 gap-2 ">
+        <div className="flex-1 flex flex-col md:items-center text-red-950 p-2 gap-2">
           {filteredFeedbacks.length === 0 ? (
             <p className="text-center text-sm italic text-gray-500 pb-3">
-              No feedback found with this star rating.
+              No feedback found.
             </p>
           ) : (
-            filteredFeedbacks.map((feedback, i) => (
+            filteredFeedbacks.map((fb) => (
               <FeedbackCard
-                key={i}
-                fb={feedback}
-                getFeedbacks={getFeedbacks}
+                key={fb.id}
+                fb={fb}
+                getFeedbacks={loadFeedbacks}
                 onEdit={(fb) => {
                   setComment(fb.message);
                   setRating(fb.star);
-                  setEditingFeedbackId(fb._id);
-
+                  setEditingFeedbackId(fb.id);
                   inputRef.current.focus();
                 }}
               />
@@ -171,14 +153,15 @@ const Feedback = () => {
         </div>
       </div>
 
+      {/* FORM */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-2 bg-white w-[95%] md:w-[85%] lg:w-[60%] rounded-lg p-3"
       >
         <div className="flex gap-1">
-          {[1, 2, 3, 4, 5].map((num, i) => (
+          {[1, 2, 3, 4, 5].map((num) => (
             <img
-              key={i}
+              key={num}
               src={(hover || rating) >= num ? star : emptyStar}
               onMouseEnter={() => setHover(num)}
               onMouseLeave={() => setHover(0)}
@@ -195,30 +178,16 @@ const Feedback = () => {
             placeholder="Comment here..."
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            className="pl-2 flex-1 outline-none bg-red-200 text-black shadow-md rounded-lg text-md placeholder:text-gray-500 placeholder:text-sm md:py-2 md:text-lg md:placeholder:text-lg w-[75%] py-1"
+            className="pl-2 flex-1 outline-none bg-red-200 text-black shadow-md rounded-lg text-md placeholder:text-red-900 py-1.5"
           />
 
-          {user?.email ? (
-            <div className="flex flex-col items-center justify-center gap-2">
-              {editingFeedbackId && (
-                <div
-                  className="cursor-pointer text-white bg-red-600 rounded-xl px-2 text-center"
-                  onClick={() => {
-                    setEditingFeedbackId(null);
-                    setComment("");
-                    setRating(0);
-                  }}
-                >
-                  x
-                </div>
-              )}
-              <button type="submit">
-                <img src={sendButton} alt="Send Icon" className="feedbackBtn" />
-              </button>
-            </div>
+          {user ? (
+            <button type="submit">
+              <img src={sendButton} alt="Send Icon" className="feedbackBtn" />
+            </button>
           ) : (
             <div
-              className="bg-green-600 text-white px-2 py-1 rounded-lg text-xs sm:text-sm md:text-lg flex items-center justify-center text-center w-[25%] md:w-[15%] cursor-pointer hover:bg-green-700 hover:shadow-[2px_2px_1px_black]"
+              className="bg-green-600 text-white px-2 py-1 rounded-lg cursor-pointer text-xs md:text-lg"
               onClick={() => setShowModal(true)}
             >
               Sign In

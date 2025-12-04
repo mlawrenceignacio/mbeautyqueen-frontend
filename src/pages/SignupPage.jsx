@@ -2,14 +2,39 @@ import { IoPersonSharp } from "react-icons/io5";
 import { IoIosLock } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
 
-import axios from "../api/axiosInstance.js";
-import { handleGoogleLogin } from "../api/handleGoogleLogin.js";
 import Loading from "../components/Loading.jsx";
 import useUserStore from "../store/useUserStore.js";
 
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useState } from "react";
+
+import { getUsers, saveUsers, saveCurrentUser } from "../utils/mockDB.js";
+import { handleGoogleLogin } from "../api/handleGoogleLogin.js";
+
+function generateUniqueUsername(existingUsers) {
+  const adjectives = [
+    "glam",
+    "queen",
+    "beauty",
+    "blush",
+    "lash",
+    "brow",
+    "style",
+    "user",
+  ];
+  const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
+  const randomNum = Math.floor(10000 + Math.random() * 90000);
+
+  let username = `${randomAdj}_${randomNum}`;
+
+  while (existingUsers.some((u) => u.username === username)) {
+    const newNum = Math.floor(10000 + Math.random() * 90000);
+    username = `${randomAdj}_${newNum}`;
+  }
+
+  return username;
+}
 
 const SignupPage = () => {
   const [email, setEmail] = useState("");
@@ -17,45 +42,58 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const setUser = useUserStore((state) => state.setUser);
-
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
-    try {
-      const res = await axios.post(
-        "/auth/signup",
-        { email, password },
-        {
-          headers: {
-            "x-api-key": import.meta.env.VITE_WEB_API_KEY,
-          },
-        }
-      );
 
+    // VALIDATION
+    if (!email.trim() || !password.trim()) {
+      toast.error("All fields are required.");
       setIsLoading(false);
-      toast.success(res.data.message);
-      setUser(res.data.user);
-      navigate("/home");
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(error.response?.data?.message || "Error occured");
+      return;
     }
+
+    if (password.trim().length < 8) {
+      toast.error("Password must be at least 8 characters.");
+      setIsLoading(false);
+      return;
+    }
+
+    const users = getUsers();
+    const exists = users.find((u) => u.email === email.trim());
+
+    if (exists) {
+      toast.error("Email already registered");
+      setIsLoading(false);
+      return;
+    }
+
+    // CREATE USER
+    const username = generateUniqueUsername(users);
+
+    const newUser = {
+      id: String(Date.now()),
+      email: email.trim(),
+      password: password.trim(),
+      username,
+    };
+
+    saveUsers([...users, newUser]);
+    saveCurrentUser(newUser);
+    setUser(newUser);
+
+    toast.success("Account created!");
+    setIsLoading(false);
+    navigate("/home");
   }
 
   return (
-    <div className="flex flex-col items-center h-[100dvh] w-[100vw] overflow-hidden lg:flex-row lg:justify-center ">
+    <div className="flex flex-col items-center h-[100dvh] w-[100vw] overflow-hidden lg:justify-center ">
       {isLoading && <Loading />}
-      <div className="w-[270px] h-[200px] mb-2 lg:w-[50%] lg:h-[70%]">
-        <img
-          src="./logo.jpg"
-          alt="Salon Logo"
-          className="rounded-xl w-full h-full object-contain"
-        />
-      </div>
 
-      <div className="flex-1 flex flex-col items-center w-full lg:flex-none lg:w-[50%] lg:h-[100%] pink-bg lg:py-[20px] lg:justify-center">
+      <div className="flex-1 flex flex-col items-center w-full lg:flex-none lg:w-[50%] lg:h-[100%] pink-bg lg:py-[20px] justify-center">
         <h1 className="font-bold red-color text-2xl mb-2 lg:text-2xl lg:mb-[25px]">
           Create an Account
         </h1>
@@ -89,7 +127,7 @@ const SignupPage = () => {
 
             <button
               type="submit"
-              className="red-bg w-full p-2 rounded-lg hover:bg-red-500 mt-1 md:w-[60%] md:text-lg lg:w-[85%] "
+              className="red-bg w-full p-2 rounded-lg hover:bg-red-500 mt-1 md:w-[60%] md:text-lg lg:w-[85%]"
             >
               Sign In
             </button>

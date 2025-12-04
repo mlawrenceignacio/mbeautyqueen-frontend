@@ -1,23 +1,23 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { getCurrentUser, logoutUser, saveCurrentUser } from "../utils/mockDB";
 
-const useUserStore = create(
-  persist(
-    (set) => ({
-      user: null,
+const useUserStore = create((set) => ({
+  user: null,
 
-      setUser: (userData) => {
-        set({ user: userData });
-      },
+  loadUser: () => {
+    const stored = getCurrentUser();
+    set({ user: stored });
+  },
 
-      clearUser: () => {
-        set({ user: null });
-      },
-    }),
-    {
-      name: "user-storage",
-    }
-  )
-);
+  setUser: (user) => {
+    saveCurrentUser(user);
+    set({ user });
+  },
+
+  logout: () => {
+    logoutUser();
+    set({ user: null });
+  },
+}));
 
 export default useUserStore;

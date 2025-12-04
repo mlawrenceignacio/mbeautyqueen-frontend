@@ -150,3 +150,9 @@ body {
   box-shadow: 1px 1px 1px black;
   border: 1px solid black;
 }
+
+.input-reservation-modern {
+  @apply w-full px-4 py-2 rounded-lg bg-pink-50 border border-red-300 
+  text-red-900 shadow-inner focus:outline-none focus:ring-2 focus:ring-red-600 
+  transition-all;
+}

@@ -1,206 +1,160 @@
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 
+import { LuHeart, LuSparkles, LuCrown, LuStar } from "react-icons/lu";
+
 import salonLogo from "../assets/images/logo.jpg";
 import owner from "../assets/images/owner.jpeg";
 import owner2 from "../assets/images/owner2.png";
 import owner3 from "../assets/images/owner3.png";
+
 import gallery1 from "../assets/images/interior.png";
 import gallery2 from "../assets/images/interior2.png";
-import gallery3 from "../assets/images/logo2.png";
-import bg from "../assets/images/desktopBG3.jpg";
+
 import missionIcon from "../assets/images/mission.png";
 import visionIcon from "../assets/images/vision.png";
 import aboutIcon from "../assets/images/about.png";
 
 const AboutUs = () => {
   return (
-    <div className="flex flex-col h-[100dvh] w-full">
-      <Header />
+    <div className="min-h-[100dvh] w-full bg-white flex flex-col">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-50 bg-white shadow-sm">
+        <Header />
+      </div>
 
-      <div className="flex-1 flex flex-col items-center  overflow-y-auto">
-        <div className="py-8 w-full bg-[url('src/assets/images/desktopBG.jpg')] bg-cover flex flex-col justify-center items-center">
-          <h1 className="text-2xl md:text-3xl text-red-950 text-center font-bold  pt-1.5">
-            OUR STORY
+      {/* MAIN CONTENT */}
+      <div className="flex flex-col items-center flex-1">
+        <section className="relative w-full py-14 bg-pink-800 text-center text-white shadow-lg">
+          {/* Decorative Icons */}
+          <LuSparkles className="absolute top-6 left-6 text-white text-3xl opacity-40" />
+          <LuSparkles className="absolute top-6 right-6 text-white text-3xl opacity-40" />
+
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight drop-shadow-sm flex justify-center items-center gap-2 text-white">
+            <LuSparkles className="text-white opacity-60" />
+            Our Story
+            <LuSparkles className="text-white opacity-60" />
           </h1>
 
-          <p className="text-center text-red-950 text-sm md:text-lg">
-            A story the our eyes witnessed.
+          <p className="text-white mt-2 text-sm md:text-lg opacity-90">
+            A story built with passion, growth, and beauty.
           </p>
 
-          <div className="flex items-center justify-center gap-3 md:gap-4 h-[130px] md:h-[200px]  px-2 py-1.5 mt-2 md:mt-4">
-            <img
-              src={gallery1}
-              alt="Salon Image"
-              className="w-[130px] md:w-[170px] lg:w-[200px] h-full object-cover rounded-xl transition-transform duration-300 hover:scale-[105%]"
-            />
-            <img
-              src={gallery3}
-              alt="Salon Image"
-              className="w-[130px] md:w-[170px] lg:w-[200px] h-full object-cover rounded-xl transition-transform duration-300 hover:scale-[105%]"
-            />
-            <img
-              src={gallery2}
-              alt="Salon Image"
-              className="w-[130px] md:w-[170px] lg:w-[200px] h-full object-cover rounded-xl transition-transform duration-300 hover:scale-[105%]"
-            />
+          <div className="flex gap-4 justify-center mt-10 px-4 flex-wrap">
+            {[gallery1, gallery2].map((img, i) => (
+              <img
+                key={i}
+                src={img}
+                className={`w-[140px] md:w-[200px] lg:w-[240px] 
+                h-[140px] md:h-[200px]
+                rounded-xl object-cover shadow-lg hover:scale-105 transition duration-300`}
+              />
+            ))}
           </div>
-        </div>
+        </section>
 
-        <section className="flex flex-col items-center text-center py-5 gap-3 bg-pink-100/50 md:px-20  lg:px-1 ">
-          <div className="lg:flex lg:flex-row lg:items-center lg:w-[80%] lg:gap-3">
-            <div className="flex flex-col gap-2 lg:w-[50%] lg:flex-1">
-              <div className="flex w-full items-center lg:justify-start lg:pl-4 justify-center gap-2">
-                <img
-                  src={missionIcon}
-                  alt="Mission Icon"
-                  className="w-[25px] h-[25px]"
-                />
-                <h2 className="text-xl font-bold text-red-950 md:text-2xl">
-                  Our Mission
-                </h2>
-              </div>
-              <p className="text-justify text-sm px-5  md:text-lg">
-                MbeautyQueen Beauty and Wellness is committed to delivering
-                high-quality, client-centered beauty and wellness services that
-                enhance confidence, comfort, and natural beauty. We provide
-                expertly crafted treatments, from brows and lashes to full
-                aesthetic and spa services, using proper training, advanced
-                techniques, and professional-grade equipment. Guided by genuine
-                care and dedication, we aim to create a warm, welcoming
-                environment where every client feels valued, pampered, and
-                empowered.
-              </p>
+        <section className="w-full max-w-[1000px] mt-12 px-6 md:px-10">
+          <div className="bg-white border border-neutral-200 rounded-xl p-8 shadow-sm mb-12">
+            <div className="flex items-center gap-3 mb-4">
+              <img src={missionIcon} className="w-7 h-7 opacity-70" />
+              <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800 tracking-tight">
+                Our Mission
+              </h2>
             </div>
 
-            <img
-              src={bg}
-              alt="Background Image"
-              className="h-[310px] w-[50%] object-cover my-4 hidden lg:block rounded-lg shadow-[2px_1px_4px_black]"
-            />
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
+              <p className="text-[15px] md:text-lg text-neutral-700 leading-relaxed flex-1 text-justify">
+                MbeautyQueen Beauty and Wellness is committed to delivering
+                high-quality beauty and wellness services that empower
+                confidence and enhance natural beauty. Every treatment is
+                performed with precision, care, and genuine passion.
+              </p>
+
+              <img
+                src={gallery1}
+                className="hidden lg:block w-[40%] h-[220px] object-cover rounded-lg shadow-md"
+              />
+            </div>
           </div>
 
-          <img
-            src={bg}
-            alt="Background Image"
-            className="w-[90%] md:w-[95%] h-[250px] md:h-[400px] lg:w-[55%] object-cover my-4 lg:hidden"
-          />
-
-          <div className="flex flex-col gap-2 lg:w-[80%]">
-            <div className="flex w-full items-center justify-center gap-2 lg:justify-start lg:pl-4">
-              <img
-                src={visionIcon}
-                alt="Vision Icon"
-                className="w-[25px] h-[25px]"
-              />
-              <h2 className="text-xl  md:text-2xl font-bold text-red-950">
+          <div className="bg-white border border-neutral-200 rounded-xl p-8 shadow-sm mb-12">
+            <div className="flex items-center gap-3 mb-4">
+              <img src={visionIcon} className="w-7 h-7 opacity-70" />
+              <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800 tracking-tight">
                 Our Vision
               </h2>
             </div>
-            <p className="text-justify text-sm px-4 md:text-lg">
-              Our vision is to become a leading beauty and wellness destination
-              recognized for excellence, innovation, and heartfelt service. We
-              aspire to expand our reach across more communities, offering a
-              complete and continually evolving range of treatments that meet
-              the highest standards of safety and quality. By nurturing a
-              culture of learning, professionalism, and passion, MbeautyQueen
-              Beauty and Wellness aims to inspire trust, set industry
-              benchmarks, and uplift lives through transformative beauty
-              experiences.
-            </p>
-          </div>
-        </section>
 
-        <section
-          id="about-salon"
-          className="flex flex-col items-center lg:mt-6 mt-4 lg:w-[90%] "
-        >
-          <div className="flex w-full justify-center items-center gap-2 mb-2 mt-3">
-            <img
-              src={aboutIcon}
-              alt="Vision Icon"
-              className="w-[25px] h-[25px]"
-            />
-            <h2 className="text-lg font-bold text-red-950  md:text-2xl">
-              ABOUT US
-            </h2>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full items-center lg:justify-center lg:gap-10 ">
-            <div className="w-[90%] h-[200px] md:w-[80%] md:h-[220px] lg:h-[220px] lg:w-[30%] mt-2 mb-4 rounded-lg border border-black">
+            <div className="flex flex-col lg:flex-row-reverse gap-8 lg:gap-10 items-center">
+              <p className="text-[15px] md:text-lg text-neutral-700 leading-relaxed flex-1 text-justify">
+                Our vision is to grow into a trusted beauty & wellness
+                destination, known for innovation, cleanliness, client care, and
+                consistent excellence — while staying warm, welcoming, and
+                community-centered.
+              </p>
+
               <img
-                src={salonLogo}
-                alt="Salon Logo"
-                className="w-full h-full object-contain rounded-lg border-y border-black"
+                src={gallery2}
+                className="hidden lg:block w-[40%] h-[220px] object-cover rounded-lg shadow-md"
               />
             </div>
+          </div>
 
-            <p className="text-justify px-6 py-1 text-sm md:text-lg md:px-20 lg:w-[55%] lg:px-1">
-              MbeautyQueen Beauty and Wellness began as a humble studio inside
-              the owner’s home back in 2023. With only her training, a few
-              tools, and a deep passion for beauty services, she slowly built
-              her skills by studying different treatments and investing in
-              proper equipment. She first worked inside another salon to gain
-              experience, and after three months, she took the courageous step
-              of renting her own space. This small studio marked a turning
-              point, after a year of hard work, the business expanded into a
-              full salon. Its growth continued, eventually opening a branch in
-              Antipolo through franchise partnership, showing just how far
-              determination and quality service can go.
+          <div className="mb-14">
+            <div className="flex justify-center items-center gap-3 mb-6">
+              <img src={aboutIcon} className="w-7 h-7 opacity-70" />
+              <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800 tracking-tight">
+                About Us
+              </h2>
+            </div>
+
+            <div className="bg-white border border-neutral-200 rounded-xl p-8 shadow-sm flex flex-col lg:flex-row gap-10 items-center">
+              <div className="w-[85%] lg:w-[30%] h-[220px] overflow-hidden rounded-lg shadow-md">
+                <img src={salonLogo} className="w-full h-full object-cover" />
+              </div>
+
+              <p className="text-[15px] md:text-lg text-justify text-neutral-700 leading-relaxed flex-1">
+                MbeautyQueen Beauty and Wellness began as a small home studio in
+                2023. Through dedication and passion, it grew into a full salon
+                and later expanded through franchise. Our journey is built on
+                trust, care, and continuous improvement.
+              </p>
+            </div>
+
+            <p className="text-[15px] md:text-lg text-neutral-700 leading-relaxed mt-6 text-justify">
+              Today, clients from neighboring towns visit the salon — trusting
+              our brows, lashes, spa, and aesthetic services. MbeautyQueen is
+              now a complete wellness hub built with heart, skill, and a
+              commitment to making clients feel beautiful inside and out.
             </p>
           </div>
 
-          <div className="flex flex-col text-justify lg:px-0 px-6 py-1 text-sm md:text-lg md:px-20 lg:mt-4 lg:w-[85%]">
-            <p>
-              As the salon grew, so did its reputation. Clients began coming
-              from nearby towns like Binangonan and Antipolo, many discovering
-              the salon through social media and staying because of its reliable
-              results. The business continued to evolve, adding new services
-              such as spa massage and various aesthetic treatments. From brows
-              and lashes, the salon gradually expanded into a complete wellness
-              hub, always improving and upgrading its offerings. Through
-              consistent quality and genuine care for clients, MbeautyQueen
-              earned its place as a trusted beauty destination in the community.
+          <div className="bg-white border border-neutral-200 rounded-xl p-8 shadow-sm mb-20">
+            <h2 className="text-center text-2xl md:text-3xl font-semibold text-neutral-800 mb-6 tracking-tight flex justify-center items-center gap-2">
+              Meet the Owner
+            </h2>
+
+            <div className="flex justify-center gap-6 flex-wrap mb-6">
+              {[owner, owner2, owner3].map((img, i) => (
+                <img
+                  key={i}
+                  src={img}
+                  className="w-[180px] md:w-[210px] h-[180px] md:h-[220px] object-cover rounded-xl shadow-md hover:scale-105 transition duration-300"
+                />
+              ))}
+            </div>
+
+            <p className="text-[15px] md:text-lg text-neutral-700 leading-relaxed md:text-justify px-3 text-justify md:px-16">
+              Maricar Moral Dumon is the heart of MbeautyQueen — a dedicated
+              professional who continues to train, compete, and refine her
+              craft. Her passion and commitment to quality shaped the salon into
+              what it is today.
             </p>
           </div>
         </section>
-
-        <section
-          id="about-owner"
-          className="w-full flex flex-col items-center mt-2 lg:mt-8 bg-pink-100/50 pt-6 lg:w-[90%] lg:mb-8 lg:rounded-lg"
-        >
-          <div className="w-[90%] flex gap-2 mb-2 md:w-[80%] items-center justify-center lg:mt-4">
-            <img
-              src={owner}
-              alt="Owner Image"
-              className="w-[100px] md:w-[200px] h-[110px] md:h-[190px] object-cover rounded-lg transition-transform duration-300 hover:scale-[105%]"
-            />
-            <img
-              src={owner3}
-              alt="Owner Image"
-              className="w-[100px] md:w-[200px] h-[110px] md:h-[190px] object-cover rounded-lg transition-transform duration-300 hover:scale-[105%]"
-            />
-            <img
-              src={owner2}
-              alt="Owner Image"
-              className="w-[100px] md:w-[200px] h-[110px] md:h-[190px] object-cover rounded-lg transition-transform duration-300 hover:scale-[105%]"
-            />
-          </div>
-
-          <p className="text-sm text-justify p-6 md:px-20 md:text-lg lg:w-[98%]">
-            The owner, Maricar Moral Dumon, is a testament to passion,
-            perseverance, and continuous learning. She started with simple brow
-            and lash services, dedicating herself to training and upgrading her
-            knowledge until she eventually ventured into advanced aesthetic
-            treatments. Her commitment to excellence even led her to compete
-            internationally in Thailand and attend numerous seminars in the
-            Philippines. With every step, she poured her heart into improving
-            her craft, which became the foundation of the salon’s success and
-            the trust she now enjoys from her clients.
-          </p>
-        </section>
-
-        <Footer />
       </div>
+
+      <Footer />
     </div>
   );
 };

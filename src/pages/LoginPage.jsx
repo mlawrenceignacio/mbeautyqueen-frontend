@@ -2,7 +2,6 @@ import { IoPersonSharp } from "react-icons/io5";
 import { IoIosLock } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
 
-import axios from "../api/axiosInstance.js";
 import { handleGoogleLogin } from "../api/handleGoogleLogin.js";
 import Loading from "../components/Loading";
 import useUserStore from "../store/useUserStore.js";
@@ -11,40 +10,47 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
+import { getUsers, saveCurrentUser } from "../utils/mockDB.js";
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const setUser = useUserStore((state) => state.setUser);
-
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const res = await axios.post(
-        "/auth/login",
-        { email, password },
-        {
-          headers: {
-            "x-api-key": import.meta.env.VITE_WEB_API_KEY,
-          },
-        }
-      );
-
+    // VALIDATION
+    if (!email.trim() || !password.trim()) {
+      toast.error("All fields are required.");
       setIsLoading(false);
-      toast.success(res.data.message);
-      setUser(res.data.user);
-      setEmail("");
-      setPassword("");
-      navigate("/home");
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(error.response?.data?.message || "Error occured");
+      return;
     }
+
+    const users = getUsers();
+    const found = users.find(
+      (u) => u.email === email.trim() && u.password === password.trim()
+    );
+
+    if (!found) {
+      toast.error("Invalid email or password");
+      setIsLoading(false);
+      return;
+    }
+
+    saveCurrentUser(found);
+    setUser(found);
+
+    toast.success("Logged in successfully!");
+    setIsLoading(false);
+    navigate("/home");
+
+    setEmail("");
+    setPassword("");
   }
 
   return (

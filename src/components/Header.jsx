@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import toast from "react-hot-toast";
 
 import useUserStore from "../store/useUserStore.js";
-import axios from "../api/axiosInstance.js";
 import EditUsername from "./EditUsername.jsx";
 
 import menuIcon from "../assets/images/menu.png";
@@ -16,16 +16,14 @@ const Header = () => {
   const [showEditUsername, setShowEditUsername] = useState(false);
   const nav = useNavigate();
 
-  const { user, clearUser } = useUserStore();
+  const location = useLocation();
+  const isActive = (path) => location.pathname === path;
 
-  const handleLogout = async () => {
-    try {
-      await axios.post("/auth/logout");
-      clearUser();
-      toast.success("Logged out succesfully!");
-    } catch (error) {
-      console.error(error.message);
-    }
+  const { user, logout } = useUserStore();
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged out successfully!");
   };
 
   return (
@@ -108,9 +106,9 @@ const Header = () => {
       )}
 
       {showSettings && (
-        <ul className="absolute z-50 text-white bg-red-800/90 lg:bg-red-800/80 right-5 top-[70px] lg:top-[67px] p-3 rounded-lg text-center">
+        <ul className="absolute z-50 text-white bg-pink-950  right-5 top-[70px] lg:top-[67px] p-3 rounded-lg text-center">
           <li
-            className="px-2 py-1 hover:bg-red-950 rounded-lg cursor-pointer"
+            className="px-2 py-1 hover:bg-red-800 rounded-lg cursor-pointer"
             onClick={() => {
               setShowEditUsername(true);
               setShowSettings(false);
@@ -119,7 +117,7 @@ const Header = () => {
             Edit Username
           </li>
           <li
-            className="px-2 py-1 hover:bg-red-950 rounded-lg cursor-pointer"
+            className="px-2 py-1 hover:bg-red-800 rounded-lg cursor-pointer"
             onClick={() => {
               setShowSettings(false);
               handleLogout();
@@ -141,20 +139,44 @@ const Header = () => {
           alt="MBeautyQueen Logo 1"
         />
 
-        <ul className="flex gap-1 items-center h-[40px] text-xs lg:text-[14px]">
-          <li className="navbarli lg:w-[110px] md:w-[100px]">
+        <ul className="flex gap-5 items-center h-[40px] text-xs lg:text-[14px]">
+          <li
+            className={`navbarli lg:w-[110px] md:w-[100px] ${
+              isActive("/home") ? "bg-red-800 shadow-lg" : ""
+            }`}
+          >
             <a href="/home">HOME</a>
           </li>
-          <li className="navbarli lg:w-[110px]">
+
+          <li
+            className={`navbarli lg:w-[110px] ${
+              isActive("/services") ? "bg-red-800 shadow-lg" : ""
+            }`}
+          >
             <a href="/services">SERVICES</a>
           </li>
-          <li className="navbarli lg:w-[110px]">
+
+          <li
+            className={`navbarli lg:w-[110px] ${
+              isActive("/reservation") ? "bg-red-800 shadow-lg" : ""
+            }`}
+          >
             <a href="/reservation">RESERVATION</a>
           </li>
-          <li className="navbarli lg:w-[110px] ">
+
+          <li
+            className={`navbarli lg:w-[110px] ${
+              isActive("/about") ? "bg-red-800 shadow-lg" : ""
+            }`}
+          >
             <a href="/about">ABOUT US</a>
           </li>
-          <li className="navbarli lg:w-[110px]">
+
+          <li
+            className={`navbarli lg:w-[110px] ${
+              isActive("/contact") ? "bg-red-800 shadow-lg" : ""
+            }`}
+          >
             <a href="/contact">CONTACT US</a>
           </li>
         </ul>
