@@ -178,7 +178,7 @@ const Feedback = () => {
             placeholder="Comment here..."
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            className="pl-2 flex-1 outline-none bg-red-200 text-black shadow-md rounded-lg text-md placeholder:text-red-900 py-1.5"
+            className="pl-2 md:flex-1 outline-none bg-red-200 text-black shadow-md rounded-lg text-md placeholder:text-red-900 py-1.5 w-[70%] md:w-full"
           />
 
           {user ? (
@@ -187,7 +187,7 @@ const Feedback = () => {
             </button>
           ) : (
             <div
-              className="bg-green-600 text-white px-2 py-1 rounded-lg cursor-pointer text-xs md:text-lg"
+              className="bg-green-600 text-white px-2 py-2 rounded-lg cursor-pointer text-sm text-center md:text-lg w-[30%] md:w-[20%]"
               onClick={() => setShowModal(true)}
             >
               Sign In
