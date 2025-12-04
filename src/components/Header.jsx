@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import toast from "react-hot-toast";
 
@@ -68,19 +68,19 @@ const Header = () => {
           }`}
         >
           <li className="dropdownli">
-            <a href="/">HOME</a>
+            <Link to={"/"}>Home</Link>
           </li>
           <li className="dropdownli">
-            <a href="/services">SERVICES</a>
+            <Link to={"/services"}>Services</Link>
           </li>
           <li className="dropdownli">
-            <a href="/reservation">RESERVATION</a>
+            <Link to={"/reservation"}>Reservation</Link>
           </li>
           <li className="dropdownli">
-            <a href="/about">ABOUT US</a>
+            <Link to={"/about"}>About Us</Link>
           </li>
           <li className="dropdownli">
-            <a href="/contact">CONTACT US</a>
+            <Link to={"/contact"}>Contact Us</Link>
           </li>
           {user && (
             <li
@@ -145,7 +145,7 @@ const Header = () => {
               isActive("/") ? "bg-red-800 shadow-lg" : ""
             }`}
           >
-            <a href="/">HOME</a>
+            <Link to={"/"}>Home</Link>
           </li>
 
           <li
@@ -153,7 +153,7 @@ const Header = () => {
               isActive("/services") ? "bg-red-800 shadow-lg" : ""
             }`}
           >
-            <a href="/services">SERVICES</a>
+            <Link to={"/services"}>Services</Link>
           </li>
 
           <li
@@ -161,7 +161,7 @@ const Header = () => {
               isActive("/reservation") ? "bg-red-800 shadow-lg" : ""
             }`}
           >
-            <a href="/reservation">RESERVATION</a>
+            <Link to={"/reservation"}>Reservation</Link>
           </li>
 
           <li
@@ -169,7 +169,7 @@ const Header = () => {
               isActive("/about") ? "bg-red-800 shadow-lg" : ""
             }`}
           >
-            <a href="/about">ABOUT US</a>
+            <Link to={"/about"}>About Us</Link>
           </li>
 
           <li
@@ -177,7 +177,7 @@ const Header = () => {
               isActive("/contact") ? "bg-red-800 shadow-lg" : ""
             }`}
           >
-            <a href="/contact">CONTACT US</a>
+            <Link to={"/contact"}>Contact Us</Link>
           </li>
         </ul>
 

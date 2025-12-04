@@ -11,7 +11,7 @@ export function saveAllFeedbacks(list) {
 
 export function addFeedback(fb) {
   const list = getAllFeedbacks();
-  list.unshift(fb); // newest first
+  list.unshift(fb);
   saveAllFeedbacks(list);
 }
 
