@@ -105,7 +105,7 @@ const LoginPage = () => {
         <p className="mt-10 text-sm md:text-lg lg:text-xl">
           Don't have an account?{" "}
           <Link to="/signup" className="red-color font-bold">
-            Sign in
+            Sign up
           </Link>
           .
         </p>
