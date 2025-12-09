@@ -129,7 +129,7 @@ const SignupPage = () => {
               type="submit"
               className="red-bg w-full p-2 rounded-lg hover:bg-red-500 mt-1 md:w-[60%] md:text-lg lg:w-[85%]"
             >
-              Sign In
+              Sign Up
             </button>
           </div>
         </form>
@@ -140,7 +140,7 @@ const SignupPage = () => {
           onClick={handleGoogleLogin}
           className="flex items-center justify-center py-1.5 rounded-md gap-2 bg-red-200 w-[71%] sm:w-[51%] red-color text-md hover:bg-red-100 md:w-[45%] md:text-lg lg:bg-white lg:w-[58%] lg:shadow-md lg:py-2"
         >
-          <FcGoogle /> Sign In with Google
+          <FcGoogle /> Sign Up with Google
         </div>
 
         <p className="mt-7 text-sm red-color md:text-lg">
